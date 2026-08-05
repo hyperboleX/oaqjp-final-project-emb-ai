@@ -8,13 +8,12 @@ def sent_emotion():
     text_to_analyze = request.args.get('textToAnalyze')
     response = emotion_detector(text_to_analyze)
     
-    response = str(response)
+    emotions = ", ".join(f"{k}: {v}" for k, v in list(response.items())[:-2])
+    emotion_last = ", ".join(f"{k}: {v}" for k, v in list(response.items())[-2:-1])
+    last_key, last_val = list(response.items())[-1]
+    dominant = f"{last_key} is {last_val}"
 
-    emotions = response)[:-2]
-    emotion_last = response)[-2:-1]
-    dominant = response['dominant emotion']
-
-    final_str = "For the given statement, the system response is {} and {}. The dominant emotion is {}.".format(emotions, emotion_last, dominant)
+    final_str = "For the given statement, the system response is {} and {}. The {}.".format(emotions, emotion_last, dominant)
     
     return final_str
 
