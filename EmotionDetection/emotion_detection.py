@@ -7,10 +7,14 @@ def emotion_detector (text_to_analyze):
 
     response = requests.post(url, json = inputobj, headers=headers)
 
-    formatted_response = json.loads(response.text)
-
-    label = formatted_response['emotionPredictions'][0]['emotion']
-    dominant = max(label, key=label.get)
-    label["dominant emotion"] = dominant
+    if response.status_code == 200:
+        formatted_response = json.loads(response.text)
+        label = formatted_response['emotionPredictions'][0]['emotion']
+        dominant = max(label, key=label.get)
+        label["dominant emotion"] = dominant
+    elif response.status_code == 400:
+        label = None
+    else:
+        label = None
 
     return  label
